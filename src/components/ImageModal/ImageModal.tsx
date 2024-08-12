@@ -1,18 +1,8 @@
+import { Image } from "../../unsplash-api";
 import css from "./ImageModal.module.css";
 import Modal from "react-modal";
 
 Modal.setAppElement("#root");
-
-type Image = {
-  urls: {
-    regular: string;
-  };
-  alt_description: string;
-  description: string;
-  user: { name: string };
-  created_at: number;
-  likes: number;
-};
 
 type Props = {
   image: Image | null;

@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
 import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
-import fetchImages from "./unsplash-api";
+import fetchImages, { Image } from "./unsplash-api";
 import Loader from "./components/Loader/Loader.jsx";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage.jsx";
 import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn.jsx";
 import ImageModal from "./components/ImageModal/ImageModal.jsx";
 
 export default function App() {
-  const [images, setImages] = useState<any>([]);
+  const [images, setImages] = useState<Image[]>([]);
   const [query, setQuery] = useState<string>("");
   const [loader, setLoader] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(999);
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedImage, setSelectedImage] = useState<any>(null);
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
 
   function onSubmit(newImage: string): void {
     setImages([]);
@@ -27,7 +27,7 @@ export default function App() {
     setPage(page + 1);
   }
 
-  function openModal(image: object): void {
+  function openModal(image: Image): void {
     setSelectedImage(image);
     setIsOpen(true);
   }
@@ -46,9 +46,9 @@ export default function App() {
       try {
         setLoader(true);
         setError(false);
-        const promise = await fetchImages(query, page);
-        setImages((prevArray: any) => [...prevArray, ...promise.results]);
-        setTotalPages(promise.total_pages);
+        const data = await fetchImages(query, page);
+        setImages((prevArray: Image[]) => [...prevArray, ...data.results]);
+        setTotalPages(data.total_pages);
       } catch {
         setError(true);
       } finally {

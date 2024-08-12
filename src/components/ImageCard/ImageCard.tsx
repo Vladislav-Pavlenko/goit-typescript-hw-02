@@ -1,11 +1,5 @@
+import { Image } from "../../unsplash-api";
 import css from "./ImageCard.module.css";
-
-type Image = {
-  urls: {
-    small: string;
-  };
-  alt_description: string;
-};
 
 type Props = {
   image: Image;
